@@ -2,14 +2,12 @@ package controllers
 
 import (
 	"fmt"
-
-	"github.com/astaxie/beego/validation"
 )
 
 type User struct {
-	Name string `json:"name"`
+	Name string `json:"name" valid:"Required;MinSize(6)"`
 	Age  int    `json:"age"`
-	Sex  string `json:"sex"`
+	Sex  string `json:"sex" valid:"Required;MaxSize(6)"`
 }
 
 type HelloControllers struct {
@@ -37,8 +35,6 @@ func (this *HelloControllers) PostStruct() {
 	fmt.Println("PostStruct")
 	var user User
 	this.GetJSON(&user)
-	valid := validation.Validation{} //创建验证数据对象
-	valid.Required(user.Name, "Name").Message("真实姓名不能为空")
 	this.response.Success(&user)
 	this.response.Msg = "I'm struct"
 }
